@@ -5,6 +5,7 @@
     using System.Linq;
     using Microsoft.AspNetCore.Mvc;
     using MiniBlog.Model;
+    using MiniBlog.Service;
     using MiniBlog.Stores;
 
     [ApiController]
@@ -13,17 +14,19 @@
     {
         private IArticleStore articleStore;
         private IUser userStore;
+        private IArticleService articleService;
 
-        public ArticleController(IArticleStore articleStore, IUser userStore)
+        public ArticleController(IArticleStore articleStore, IUser userStore, IArticleService articleService)
         {
             this.articleStore = articleStore;
             this.userStore = userStore;
+            this.articleService = articleService;
         }
 
         [HttpGet]
         public List<Article> List()
         {
-            return articleStore.GetAll();
+            return articleService.GetAll();
         }
 
         [HttpPost]

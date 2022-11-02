@@ -15,14 +15,6 @@ namespace MiniBlogTest.ControllerTest
     [Collection("IntegrationTest")]
     public class UserControllerTest
     {
-        public UserControllerTest()
-            : base()
-
-        {
-            UserStoreWillReplaceInFuture.Instance.Init();
-            ArticleStoreWillReplaceInFuture.Instance.Init();
-        }
-
         [Fact]
         public async Task Should_get_all_users()
         {

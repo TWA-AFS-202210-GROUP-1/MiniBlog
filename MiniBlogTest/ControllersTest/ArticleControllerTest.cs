@@ -9,6 +9,7 @@
     using Microsoft.AspNetCore.Mvc.Testing;
     using Microsoft.Extensions.DependencyInjection;
     using MiniBlog.Model;
+    using MiniBlog.Service;
     using MiniBlog.Stores;
     using Moq;
     using Newtonsoft.Json;
@@ -18,10 +19,11 @@
     public class ArticleControllerTest
     {
         private IArticleStore articleStore = new ArticleStoreContext();
+        private IUser userStore = new UserContext();
 
         public ArticleControllerTest()
         {
-            UserStoreWillReplaceInFuture.Instance.Init();
+            //UserStoreWillReplaceInFuture.Instance.Init();
             //ArticleStoreWillReplaceInFuture.Instance.Init();
             articleStore.Save(new Article(null, "Happy new year", "Happy 2021 new year"));
             articleStore.Save(new Article(null, "Happy Halloween", "Halloween is coming"));
