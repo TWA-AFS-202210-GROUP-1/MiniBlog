@@ -31,9 +31,16 @@ namespace MiniBlog.Service
             return article;
         }
 
-        public List<Article> GetAll()
+        public List<Article> List()
         {
             return articleStore.GetAll();
+        }
+
+        public Article GetById(Guid id)
+        {
+            var foundArticle =
+                articleStore.GetAll().FirstOrDefault(article => article.Id == id);
+            return foundArticle;
         }
     }
 }
