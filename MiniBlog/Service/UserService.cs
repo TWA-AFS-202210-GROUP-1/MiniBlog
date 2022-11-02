@@ -56,5 +56,12 @@ namespace MiniBlog.Service
 
             return foundUser;
         }
+
+        public User GetByName(string name)
+        {
+            return userStore.GetAll().FirstOrDefault(_ =>
+                string.Equals(_.Name, name, StringComparison.CurrentCultureIgnoreCase)) ?? throw new
+                InvalidOperationException();
+        }
     }
 }
