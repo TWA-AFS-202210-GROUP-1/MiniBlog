@@ -10,5 +10,7 @@ namespace MiniBlog.Service
         User Register(User user);
 
         User Update(User user);
+
+        User Delete(string name);
     }
 }

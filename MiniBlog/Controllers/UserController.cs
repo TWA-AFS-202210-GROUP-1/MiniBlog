@@ -15,12 +15,14 @@ namespace MiniBlog.Controllers
         private IArticleStore articleStore = new ArticleStoreContext();
         private IUser userStore = new UserContext();
         private IUserService userService;
+        private IArticleService articleService;
 
-        public UserController(IArticleStore articleStore, IUser userStore, IUserService userService)
+        public UserController(IArticleStore articleStore, IUser userStore, IUserService userService, IArticleService articleService)
         {
             this.articleStore = articleStore;
             this.userStore = userStore;
             this.userService = userService;
+            this.articleService = articleService;
         }
 
         [HttpPost]
@@ -55,10 +57,10 @@ namespace MiniBlog.Controllers
         [HttpDelete]
         public User Delete(string name)
         {
-            var foundUser = userStore.GetAll().FirstOrDefault(_ => _.Name == name);
+            var foundUser = userService.GetAll().FirstOrDefault(_ => _.Name == name);
             if (foundUser != null)
             {
-                userStore.Delete(foundUser);
+                userService.Delete(foundUser.Name);
                 var articles = articleStore.GetAll()
                     .Where(article => article.UserName == foundUser.Name)
                     .ToList();
