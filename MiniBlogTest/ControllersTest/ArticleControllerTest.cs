@@ -13,10 +13,12 @@
     [Collection("IntegrationTest")]
     public class ArticleControllerTest
     {
+        private IArticleStore _articleStore = new ArticleStore();
         public ArticleControllerTest()
         {
             UserStoreWillReplaceInFuture.Instance.Init();
-            ArticleStoreWillReplaceInFuture.Instance.Init();
+            _articleStore.Save(new Article(null, "Happy new year", "Happy 2021 new year"));
+            _articleStore.Save(new Article(null, "Happy Halloween", "Halloween is coming"));
         }
 
         [Fact]
@@ -57,7 +59,7 @@
         [Fact]
         public async void Should_create_article_and_register_user_correct()
         {
-            GetClient();
+            //GetClient();
             var client = GetClient();
             string userNameWhoWillAdd = "Tom";
             string articleContent = "What a good day today!";
@@ -88,10 +90,14 @@
             Assert.Equal("anonymous@unknow.com", users[0].Email);
         }
 
-        private static HttpClient GetClient()
+        private HttpClient GetClient()
         {
             var factory = new WebApplicationFactory<Program>();
-            return factory.CreateClient();
+            return factory.WithWebHostBuilder(builder =>
+            {
+                builder.ConfigureServices(services => { services.AddSingleton(service => _articleStore); });
+            }).CreateClient();
+
         }
     }
 }
