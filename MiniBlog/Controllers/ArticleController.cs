@@ -1,4 +1,6 @@
-﻿namespace MiniBlog.Controllers
+﻿using MiniBlog.Service;
+
+namespace MiniBlog.Controllers
 {
     using System;
     using System.Collections.Generic;
@@ -12,11 +14,13 @@
     {
         private IArticleStore articleStore;
         private IUserStore userStore;
+        private IArticleService articleService;
 
-        public ArticleController(IArticleStore articleStore, IUserStore userStore)
+        public ArticleController(IArticleStore articleStore, IUserStore userStore, IArticleService articleService)
         {
             this.articleStore = articleStore;
             this.userStore = userStore;
+            this.articleService = articleService;
         }
 
         [HttpGet]
@@ -28,17 +32,7 @@
         [HttpPost]
         public ActionResult<Article> Create(Article article)
         {
-            if (article.UserName != null)
-            {
-                if (!userStore.GetAll().Exists(_ => article.UserName == _.Name))
-                {
-                    userStore.Save(new User(article.UserName));
-                }
-
-                articleStore.Save(article);
-            }
-
-            return Created(" ", article);
+            return Created(" ", articleService.Create(article));
         }
 
         [HttpGet("{id}")]
