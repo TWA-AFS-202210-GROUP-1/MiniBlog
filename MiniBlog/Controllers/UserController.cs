@@ -9,14 +9,10 @@ namespace MiniBlog.Controllers
     [Route("[controller]")]
     public class UserController : ControllerBase
     {
-        private IUserStore _userStore;
-        private IArticleStore _articleStore;
-        private IUserService _userService;
+        private readonly IUserService _userService;
 
-        public UserController(IUserStore userStore, IArticleStore articleStore, IUserService userService)
+        public UserController(IUserService userService)
         {
-            _userStore = userStore;
-            _articleStore = articleStore;
             _userService = userService;
         }
 
@@ -41,7 +37,7 @@ namespace MiniBlog.Controllers
         [HttpPut]
         public IActionResult Update(User user)
         {
-            var foundUser = _userService.Update(user);
+            var foundUser = _userService.UpdateUser(user);
             if (foundUser ==null)
             {
                 return NotFound();
@@ -51,27 +47,26 @@ namespace MiniBlog.Controllers
         }
 
         [HttpDelete]
-        public User Delete(string name)
+        public IActionResult Delete(string name)
         {
-            var foundUser = _userStore.GetAll().FirstOrDefault(_ => _.Name == name);
-            if (foundUser != null)
+            if (_userService.DeleteUser(name))
             {
-                _userStore.Delete(foundUser);
-                var articles = _articleStore.GetAll()
-                    .Where(article => article.UserName == foundUser.Name)
-                    .ToList();
-                articles.ForEach(article => _articleStore.Delete(article));
+                return NoContent();
             }
 
-            return foundUser;
+            return NotFound();
         }
 
         [HttpGet("{name}")]
-        public User GetByName(string name)
+        public IActionResult GetByName(string name)
         {
-            return _userStore.GetAll().FirstOrDefault(_ =>
-                string.Equals(_.Name, name, StringComparison.CurrentCultureIgnoreCase)) ?? throw new
-                InvalidOperationException();
+            var foundUser = _userService.GetUserByName(name);
+            if (foundUser == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(foundUser);
         }
     }
 }

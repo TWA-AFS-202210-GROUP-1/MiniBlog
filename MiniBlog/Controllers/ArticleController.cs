@@ -12,14 +12,10 @@ namespace MiniBlog.Controllers
     [Route("[controller]")]
     public class ArticleController : ControllerBase
     {
-        private readonly IArticleStore _articleStore;
-        private readonly IUserStore _userStore;
         private readonly IArticleService _articleService;
 
-        public ArticleController(IArticleStore articleStore, IUserStore userStore, IArticleService articleService)
+        public ArticleController(IArticleService articleService)
         {
-            _articleStore = articleStore;
-            _userStore = userStore;
             _articleService = articleService;
         }
 
