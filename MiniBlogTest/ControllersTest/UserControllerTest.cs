@@ -13,16 +13,6 @@ namespace MiniBlogTest.ControllerTest
   [Collection("IntegrationTest")]
   public class UserControllerTest
   {
-    private IArticleStore articleStore = new ArticleStoreContext();
-    private IUserStore userStore = new UserStoreContext();
-
-    public UserControllerTest()
-        : base()
-    {
-      articleStore.Save(new Article(null, "Happy new year", "Happy 2021 new year"));
-      articleStore.Save(new Article(null, "Happy Halloween", "Halloween is coming"));
-    }
-
     [Fact]
     public async Task Should_get_all_users()
     {
@@ -78,7 +68,7 @@ namespace MiniBlogTest.ControllerTest
     }
 
     [Fact]
-    public async Task Should_update_user_email_success_()
+    public async Task Should_update_user_email_successfully()
     {
       var client = GetClient();
 
