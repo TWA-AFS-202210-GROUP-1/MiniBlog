@@ -2,7 +2,7 @@ namespace MiniBlog.Stores
 {
     using Model;
 
-    public class UserStoreWillReplaceInFuture : IUserStore
+    public class UserStoreWillReplaceInFuture
     {
         private List<User> users;
 

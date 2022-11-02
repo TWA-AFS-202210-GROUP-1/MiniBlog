@@ -2,9 +2,13 @@
 
 namespace MiniBlog.Stores
 {
-    public class ArticleStoreContext : IArticleStore
+    public class ArticleStoreContext: IArticleStore
     {
         private List<Article> articles = new List<Article>();
+
+        public ArticleStoreContext()
+        {
+        }
 
         bool IArticleStore.Delete(Article articles)
         {
