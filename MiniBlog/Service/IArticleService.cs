@@ -1,4 +1,5 @@
 ﻿using MiniBlog.Model;
+using System;
 using System.Collections.Generic;
 
 namespace MiniBlog.Service
@@ -8,5 +9,7 @@ namespace MiniBlog.Service
         List<Article> GetAll();
 
         Article Create(Article article);
+
+        Article GetById(Guid id);
     }
 }

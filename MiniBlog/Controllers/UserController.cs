@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
 using System;
+using MiniBlog.Service;
 
 namespace MiniBlog.Controllers
 {
@@ -13,11 +14,13 @@ namespace MiniBlog.Controllers
     {
         private IArticleStore articleStore = new ArticleStoreContext();
         private IUser userStore = new UserContext();
+        private IUserService userService;
 
-        public UserController(IArticleStore articleStore, IUser userStore)
+        public UserController(IArticleStore articleStore, IUser userStore, IUserService userService)
         {
             this.articleStore = articleStore;
             this.userStore = userStore;
+            this.userService = userService;
         }
 
         [HttpPost]
@@ -34,7 +37,7 @@ namespace MiniBlog.Controllers
         [HttpGet]
         public List<User> GetAll()
         {
-            return userStore.GetAll();
+            return userService.GetAll();
         }
 
         [HttpPut]

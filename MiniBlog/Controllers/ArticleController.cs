@@ -39,7 +39,7 @@
         public Article GetById(Guid id)
         {
             var foundArticle =
-                articleStore.GetAll().FirstOrDefault(article => article.Id == id);
+                articleService.GetAll().FirstOrDefault(article => article.Id == id);
             return foundArticle;
         }
     }
