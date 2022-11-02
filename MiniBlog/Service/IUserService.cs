@@ -1,7 +1,7 @@
-﻿using MiniBlog.Model;
-
-namespace MiniBlog.Service
+﻿namespace MiniBlog.Service
 {
+  using MiniBlog.Model;
+
   public interface IUserService
   {
     User Register(User user);
