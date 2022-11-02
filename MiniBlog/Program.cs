@@ -1,3 +1,4 @@
+using MiniBlog.Service;
 using MiniBlog.Stores;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +12,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddSingleton<IArticleStore, ArticleStoreContext>();
 builder.Services.AddSingleton<IUserStore, UserStoreContext>();
+builder.Services.AddSingleton<IArticleService, ArticleService>();
 
 var app = builder.Build();
 
