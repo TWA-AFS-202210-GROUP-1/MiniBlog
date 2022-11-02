@@ -13,16 +13,12 @@ namespace MiniBlog.Controllers
     public class UserController : ControllerBase
     {
         private IArticleStore articleStore = new ArticleStoreContext();
-        private IUser userStore = new UserContext();
         private IUserService userService;
-        private IArticleService articleService;
 
-        public UserController(IArticleStore articleStore, IUser userStore, IUserService userService, IArticleService articleService)
+        public UserController(IArticleStore articleStore, IUserService userService)
         {
             this.articleStore = articleStore;
-            this.userStore = userStore;
             this.userService = userService;
-            this.articleService = articleService;
         }
 
         [HttpPost]
@@ -73,7 +69,7 @@ namespace MiniBlog.Controllers
         [HttpGet("{name}")]
         public User GetByName(string name)
         {
-            return userStore.GetAll().FirstOrDefault(_ =>
+            return userService.GetAll().FirstOrDefault(_ =>
                 string.Equals(_.Name, name, StringComparison.CurrentCultureIgnoreCase)) ?? throw new
                 InvalidOperationException();
         }
