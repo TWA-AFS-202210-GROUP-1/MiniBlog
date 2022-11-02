@@ -1,22 +1,25 @@
 ﻿namespace MiniBlogTest.ControllerTest
 {
-  using System.Net;
-  using System.Net.Mime;
-  using System.Text;
-  using Microsoft.AspNetCore.Mvc.Testing;
-  using MiniBlog.Model;
-  using MiniBlog.Stores;
-  using Moq;
-  using Newtonsoft.Json;
-  using Xunit;
+    using System.Net;
+    using System.Net.Mime;
+    using System.Text;
+    using Microsoft.AspNetCore.Mvc.Testing;
+    using MiniBlog.Model;
+    using MiniBlog.Stores;
+    using Moq;
+    using Newtonsoft.Json;
+    using Xunit;
 
   [Collection("IntegrationTest")]
   public class ArticleControllerTest
   {
+    private IArticleStore articleStore = new ArticleStoreContext();
+
     public ArticleControllerTest()
     {
       UserStoreWillReplaceInFuture.Instance.Init();
-      ArticleStoreWillReplaceInFuture.Instance.Init();
+      articleStore.Save(new Article(null, "Happy new year", "Happy 2021 new year"));
+      articleStore.Save(new Article(null, "Happy Halloween", "Halloween is coming"));
     }
 
     [Fact]
@@ -85,10 +88,13 @@
       Assert.Equal("anonymous@unknow.com", users[0].Email);
     }
 
-    private static HttpClient GetClient()
+    private HttpClient GetClient()
     {
       var factory = new WebApplicationFactory<Program>();
-      return factory.CreateClient();
+      return factory.WithWebHostBuilder(builder =>
+      {
+        builder.ConfigureServices(services => services.AddSingleton(articleStore));
+      }).CreateClient();
     }
   }
 }

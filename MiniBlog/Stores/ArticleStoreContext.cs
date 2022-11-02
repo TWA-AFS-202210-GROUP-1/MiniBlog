@@ -1,22 +1,28 @@
-﻿using MiniBlog.Model;
-
-namespace MiniBlog.Stores
+﻿namespace MiniBlog.Stores
 {
+  using MiniBlog.Model;
+
   public class ArticleStoreContext : IArticleStore
   {
-    public bool Delete(Article articles)
-    {
-      throw new NotImplementedException();
-    }
+    private readonly List<Article> articles = new ();
 
-    public List<Article> GetAll()
-    {
-      throw new NotImplementedException();
-    }
-
+    /// <inheritdoc/>
     public Article Save(Article article)
     {
-      throw new NotImplementedException();
+      articles.Add(article);
+      return article;
+    }
+
+    /// <inheritdoc/>
+    public List<Article> GetAll()
+    {
+      return articles;
+    }
+
+    /// <inheritdoc/>
+    public bool Delete(Article articles)
+    {
+      return this.articles.Remove(articles);
     }
   }
 }
