@@ -32,17 +32,7 @@
         [HttpPost]
         public IActionResult Create(Article article)
         {
-            if (article.UserName != null)
-            {
-                if (!userStore.GetAll().Exists(_ => article.UserName == _.Name))
-                {
-                    userStore.Save(new User(article.UserName));
-                }
-
-                articleStore.Save(article);
-            }
-
-            return Created("/article", article);
+            return Created("/articles", articleService.Create(article));
         }
 
         [HttpGet("{id}")]
