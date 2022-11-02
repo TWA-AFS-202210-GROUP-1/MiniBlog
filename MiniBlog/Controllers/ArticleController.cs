@@ -5,20 +5,15 @@
   using Microsoft.AspNetCore.Mvc;
   using MiniBlog.Model;
   using MiniBlog.Service;
-  using MiniBlog.Stores;
 
   [ApiController]
   [Route("[controller]")]
   public class ArticleController : ControllerBase
   {
-    private IArticleStore articleStore;
-    private IUserStore userStore;
     private IArticleService articleService;
 
-    public ArticleController(IArticleService articleService, IArticleStore articleStore, IUserStore userStore)
+    public ArticleController(IArticleService articleService)
     {
-      this.articleStore = articleStore;
-      this.userStore = userStore;
       this.articleService = articleService;
     }
 
