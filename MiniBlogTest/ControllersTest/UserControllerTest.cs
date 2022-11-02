@@ -53,7 +53,7 @@ namespace MiniBlogTest.ControllerTest
             Assert.Equal(userName, users[0].Name);
         }
 
-        [Fact(Skip = "to do afternoon")]
+        [Fact]
         public async Task Should_register_user_fail_when_UserStore_unavailable()
         {
             var client = GetClient();
@@ -104,7 +104,7 @@ namespace MiniBlogTest.ControllerTest
             await PrepareArticle(new Article(userName, string.Empty, string.Empty), client);
 
             var articles = await GetArticles(client);
-            Assert.Equal(4, articles.Count);
+            Assert.Equal(2, articles.Count);
 
             var users = await GetUsers(client);
             Assert.Equal(1, users.Count);
@@ -112,7 +112,7 @@ namespace MiniBlogTest.ControllerTest
             await client.DeleteAsync($"/user?name={userName}");
 
             var articlesAfterDeleteUser = await GetArticles(client);
-            Assert.Equal(2, articlesAfterDeleteUser.Count);
+            Assert.Equal(0, articlesAfterDeleteUser.Count);
 
             var usersAfterDeleteUser = await GetUsers(client);
             Assert.Equal(0, usersAfterDeleteUser.Count);
