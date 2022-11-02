@@ -1,6 +1,7 @@
 namespace MiniBlog.Stores
 {
     using Model;
+    using System.Collections.Generic;
 
     public class UserStoreWillReplaceInFuture
     {

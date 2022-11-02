@@ -1,6 +1,9 @@
 using MiniBlog.Model;
 using MiniBlog.Stores;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Linq;
+using System;
 
 namespace MiniBlog.Controllers
 {
@@ -9,14 +12,14 @@ namespace MiniBlog.Controllers
     public class UserController : ControllerBase
     {
         [HttpPost]
-        public User Register(User user)
+        public IActionResult Register(User user)
         {
             if (!UserStoreWillReplaceInFuture.Instance.GetAll().Exists(_ => user.Name.ToLower() == _.Name.ToLower()))
             {
                 UserStoreWillReplaceInFuture.Instance.Save(user);
             }
 
-            return user;
+            return Created("/user", user);
         }
 
         [HttpGet]

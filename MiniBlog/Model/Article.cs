@@ -1,3 +1,5 @@
+using System;
+
 namespace MiniBlog.Model
 {
     public class Article
