@@ -20,11 +20,6 @@ namespace MiniBlog.Controllers
         public IActionResult Register(User user)
         {
             var registeredUser = _userService.RegisterUser(user);
-            if (registeredUser == null)
-            {
-                return BadRequest();
-            }
-
             return Created($"user/{registeredUser.Name}", registeredUser);
         }
 
@@ -37,36 +32,20 @@ namespace MiniBlog.Controllers
         [HttpPut]
         public IActionResult Update(User user)
         {
-            var foundUser = _userService.UpdateUser(user);
-            if (foundUser ==null)
-            {
-                return NotFound();
-            }
-
-            return Ok(foundUser);
+            return Ok(_userService.UpdateUser(user));
         }
 
         [HttpDelete]
         public IActionResult Delete(string name)
         {
-            if (_userService.DeleteUser(name))
-            {
-                return NoContent();
-            }
-
-            return NotFound();
+            _userService.DeleteUser(name);
+            return NoContent();
         }
 
         [HttpGet("{name}")]
         public IActionResult GetByName(string name)
         {
-            var foundUser = _userService.GetUserByName(name);
-            if (foundUser == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(foundUser);
+            return Ok(_userService.GetUserByName(name));
         }
     }
 }

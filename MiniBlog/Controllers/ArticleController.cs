@@ -29,11 +29,6 @@ namespace MiniBlog.Controllers
         public IActionResult Create(Article article)
         {
             var createdArticle = _articleService.CreateArticle(article);
-            if (createdArticle == null)
-            {
-                return BadRequest();
-            }
-
             return Created($"/article/{createdArticle.Id}", createdArticle);
         }
 

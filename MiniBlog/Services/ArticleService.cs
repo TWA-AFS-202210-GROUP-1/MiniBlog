@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System.Net;
+using Microsoft.AspNetCore.Identity;
+using MiniBlog.Exceptions;
 using MiniBlog.Model;
 using MiniBlog.Stores;
 
@@ -20,7 +22,7 @@ public class ArticleService : IArticleService
         return _articleStore.GetAll();
     }
 
-    public Article? CreateArticle(Article article)
+    public Article CreateArticle(Article article)
     {
         if (!string.IsNullOrEmpty(article.UserName))
         {
@@ -33,12 +35,16 @@ public class ArticleService : IArticleService
             return article;
         }
 
-        return null;
+        throw new HttpResponseException(HttpStatusCode.BadRequest, "Please input a valid user name.");
     }
 
-    public Article? GetArticle(Guid id)
+    public Article GetArticle(Guid id)
     {
         var foundArticle = _articleStore.GetAll().FirstOrDefault(article => article.Id == id);
-        return foundArticle;
+        if (foundArticle != null)
+        {
+            return foundArticle;
+        }
+        throw new HttpResponseException(HttpStatusCode.NotFound, $"Can not find article with id: {id}.");
     }
 }
