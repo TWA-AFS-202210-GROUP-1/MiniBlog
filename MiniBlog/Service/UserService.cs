@@ -22,5 +22,15 @@ namespace MiniBlog.Service
         {
             return userStore.GetAll();
         }
+
+        public User Register(User user)
+        {
+            if (!userStore.GetAll().Exists(_ => user.Name.ToLower() == _.Name.ToLower()))
+            {
+                userStore.Save(user);
+            }
+
+            return user;
+        }
     }
 }

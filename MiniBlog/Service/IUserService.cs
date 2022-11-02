@@ -6,5 +6,7 @@ namespace MiniBlog.Service
     public interface IUserService
     {
         List<User> GetAll();
+
+        User Register(User user);
     }
 }
