@@ -11,9 +11,11 @@
     public class ArticleController : ControllerBase
     {
         private IArticleStore _articleStore;
-        public ArticleController(IArticleStore articleStore)
+        private IUserStore _userStore;
+        public ArticleController(IArticleStore articleStore, IUserStore userStore)
         {
             _articleStore = articleStore;
+            _userStore = userStore;
 
         }
 
@@ -28,9 +30,9 @@
         {
             if (article.UserName != null)
             {
-                if (!UserStoreWillReplaceInFuture.Instance.GetAll().Exists(_ => article.UserName == _.Name))
+                if (!this._userStore.GetAll().Exists(_ => article.UserName == _.Name))
                 {
-                    UserStoreWillReplaceInFuture.Instance.Save(new User(article.UserName));
+                    this._userStore.Save(new User(article.UserName));
                 }
 
                 _articleStore.Save(article);
