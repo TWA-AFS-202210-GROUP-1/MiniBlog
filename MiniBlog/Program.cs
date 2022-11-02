@@ -12,6 +12,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<IArticleStore, ArticleStore>();
 builder.Services.AddSingleton<IUserStore, UserStore>();
 builder.Services.AddSingleton<IArticleService, ArticleService>();
+builder.Services.AddSingleton<IUserService, UserService>();
 
 var app = builder.Build();
 
