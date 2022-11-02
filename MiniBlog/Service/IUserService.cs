@@ -11,5 +11,7 @@ namespace MiniBlog.Service
     User Update(User user);
 
     User Delete(string name);
+
+    User GetByName(string name);
   }
 }
