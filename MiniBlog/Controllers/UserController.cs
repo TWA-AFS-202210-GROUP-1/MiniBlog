@@ -30,7 +30,7 @@ namespace MiniBlog.Controllers
         [HttpGet]
         public List<User> GetAll()
         {
-            return userStore.GetAll();
+            return userService.GetAll();
         }
 
         [HttpPut]
