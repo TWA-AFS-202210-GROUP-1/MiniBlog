@@ -12,11 +12,9 @@
     public class ArticleController : ControllerBase
     {
         private IArticleService _articleService;
-        private IUserStore _userStore;
-        public ArticleController(IArticleService articleService, IUserStore userStore)
+        public ArticleController(IArticleService articleService)
         {
             _articleService = articleService;
-            _userStore = userStore;
 
         }
 
