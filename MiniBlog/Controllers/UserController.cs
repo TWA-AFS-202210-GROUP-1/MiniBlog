@@ -10,14 +10,10 @@ namespace MiniBlog.Controllers
     [Route("[controller]")]
     public class UserController : ControllerBase
     {
-        private IArticleStore articleStore;
-        private IUserStore userStore;
         private IUserService userService;
 
-        public UserController(IArticleStore articleStore, IUserStore userStore, IUserService userService)
+        public UserController(IUserService userService)
         {
-            this.articleStore = articleStore;
-            this.userStore = userStore;
             this.userService = userService;
         }
 
