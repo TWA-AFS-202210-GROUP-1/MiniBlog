@@ -32,18 +32,13 @@ namespace MiniBlog.Controllers
         [HttpPost]
         public IActionResult Create(Article article)
         {
-            if (article.UserName != null)
+            var createdArticle = _articleService.CreateArticle(article);
+            if (createdArticle == null)
             {
-                if (!_userStore.GetAll().Exists(_ => article.UserName == _.Name))
-                {
-                    _userStore.Save(new User(article.UserName));
-                }
-
-                _articleStore.Save(article);
-                return Created($"/article/{article.Id}", article);
+                return BadRequest();
             }
 
-            return BadRequest();
+            return Created($"/article/{createdArticle.Id}", createdArticle);
         }
 
         [HttpGet("{id}")]

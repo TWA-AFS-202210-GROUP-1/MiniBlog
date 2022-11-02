@@ -6,5 +6,6 @@ namespace MiniBlog.Services
     public interface IArticleService
     {
         public List<Article> GetAllArticles();
+        public Article? CreateArticle(Article article);
     }
 }
