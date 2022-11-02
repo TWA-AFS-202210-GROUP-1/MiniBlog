@@ -12,10 +12,12 @@
     public class ArticleController : ControllerBase
     {
         private IArticleStore articleStore;
+        private IUser userStore;
 
-        public ArticleController(IArticleStore articleStore)
+        public ArticleController(IArticleStore articleStore, IUser userStore)
         {
             this.articleStore = articleStore;
+            this.userStore = userStore;
         }
 
         [HttpGet]
@@ -29,9 +31,9 @@
         {
             if (article.UserName != null)
             {
-                if (!UserStoreWillReplaceInFuture.Instance.GetAll().Exists(_ => article.UserName == _.Name))
+                if (!userStore.GetAll().Exists(_ => article.UserName == _.Name))
                 {
-                    UserStoreWillReplaceInFuture.Instance.Save(new User(article.UserName));
+                    userStore.Save(new User(article.UserName));
                 }
 
                 articleStore.Save(article);
@@ -44,7 +46,7 @@
         public Article GetById(Guid id)
         {
             var foundArticle =
-                ArticleStoreWillReplaceInFuture.Instance.GetAll().FirstOrDefault(article => article.Id == id);
+                articleStore.GetAll().FirstOrDefault(article => article.Id == id);
             return foundArticle;
         }
     }

@@ -3,7 +3,7 @@ namespace MiniBlog.Stores
     using Model;
     using System.Collections.Generic;
 
-    public class UserStoreWillReplaceInFuture
+    public class UserStoreWillReplaceInFuture : IUser
     {
         private List<User> users;
 
