@@ -22,4 +22,9 @@ public class UserService : IUserService
 
         return null;
     }
+
+    public List<User> GetAllUsers()
+    {
+        return _userStore.GetAll();
+    }
 }
