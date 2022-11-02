@@ -16,7 +16,6 @@
         private IArticleStore _articleStore = new ArticleStore();
         public ArticleControllerTest()
         {
-            UserStoreWillReplaceInFuture.Instance.Init();
             _articleStore.Save(new Article(null, "Happy new year", "Happy 2021 new year"));
             _articleStore.Save(new Article(null, "Happy Halloween", "Halloween is coming"));
         }
@@ -44,7 +43,6 @@
                 builder.ConfigureServices(services => { services.AddSingleton(service => articleStoreMocker.Object); });
             }).CreateClient();
 
-            //var client = GetClient();
             string userNameWhoWillAdd = "Tom";
             string articleContent = "What a good day today!";
             string articleTitle = "Good day";
@@ -59,7 +57,6 @@
         [Fact]
         public async void Should_create_article_and_register_user_correct()
         {
-            //GetClient();
             var client = GetClient();
             string userNameWhoWillAdd = "Tom";
             string articleContent = "What a good day today!";

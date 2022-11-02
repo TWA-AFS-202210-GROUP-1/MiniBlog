@@ -29,7 +29,6 @@ namespace MiniBlog.Services
                     _userStore.Save(new User(article.UserName));
                 }
 
-                //ArticleStoreWillReplaceInFuture.Instance.Save(article);
                 this._articleStore.Save(article);
             }
 
