@@ -1,14 +1,14 @@
 ﻿namespace MiniBlogTest.ControllerTest
 {
-    using System.Net;
-    using System.Net.Mime;
-    using System.Text;
-    using Microsoft.AspNetCore.Mvc.Testing;
-    using MiniBlog.Model;
-    using MiniBlog.Stores;
-    using Moq;
-    using Newtonsoft.Json;
-    using Xunit;
+  using System.Net;
+  using System.Net.Mime;
+  using System.Text;
+  using Microsoft.AspNetCore.Mvc.Testing;
+  using MiniBlog.Model;
+  using MiniBlog.Stores;
+  using Moq;
+  using Newtonsoft.Json;
+  using Xunit;
 
   [Collection("IntegrationTest")]
   public class ArticleControllerTest
@@ -17,7 +17,6 @@
 
     public ArticleControllerTest()
     {
-      UserStoreWillReplaceInFuture.Instance.Init();
       articleStore.Save(new Article(null, "Happy new year", "Happy 2021 new year"));
       articleStore.Save(new Article(null, "Happy Halloween", "Halloween is coming"));
     }
@@ -43,6 +42,7 @@
       {
         builder.ConfigureServices(services => services.AddSingleton(serviceProvider => articleStoreMocker.Object));
       }).CreateClient();
+
       string userNameWhoWillAdd = "Tom";
       string articleContent = "What a good day today!";
       string articleTitle = "Good day";

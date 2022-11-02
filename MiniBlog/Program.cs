@@ -10,6 +10,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddSingleton<IArticleStore, ArticleStoreContext>();
+builder.Services.AddSingleton<IUserStore, UserStoreContext>();
 
 var app = builder.Build();
 
