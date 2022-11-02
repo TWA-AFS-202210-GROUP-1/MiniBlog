@@ -9,5 +9,7 @@ namespace MiniBlog.Service
     List<User> GetAll();
 
     User Update(User user);
+
+    User Delete(string name);
   }
 }
