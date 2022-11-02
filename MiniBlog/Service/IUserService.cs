@@ -8,5 +8,7 @@ namespace MiniBlog.Service
         List<User> GetAll();
 
         User Register(User user);
+
+        User Update(User user);
     }
 }

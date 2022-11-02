@@ -32,5 +32,16 @@ namespace MiniBlog.Service
 
             return user;
         }
+
+        public User Update(User user)
+        {
+            var foundUser = userStore.GetAll().FirstOrDefault(_ => _.Name == user.Name);
+            if (foundUser != null)
+            {
+                foundUser.Email = user.Email;
+            }
+
+            return foundUser;
+        }
     }
 }
