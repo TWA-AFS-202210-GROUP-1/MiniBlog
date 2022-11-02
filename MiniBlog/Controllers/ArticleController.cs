@@ -1,4 +1,6 @@
-﻿namespace MiniBlog.Controllers
+﻿using MiniBlog.Services;
+
+namespace MiniBlog.Controllers
 {
     using System;
     using System.Collections.Generic;
@@ -12,17 +14,19 @@
     {
         private readonly IArticleStore _articleStore;
         private readonly IUserStore _userStore;
+        private readonly IArticleService _articleService;
 
-        public ArticleController(IArticleStore articleStore, IUserStore userStore)
+        public ArticleController(IArticleStore articleStore, IUserStore userStore, IArticleService articleService)
         {
             _articleStore = articleStore;
             _userStore = userStore;
+            _articleService = articleService;
         }
 
         [HttpGet]
         public List<Article> List()
         {
-            return _articleStore.GetAll();
+            return _articleService.GetAllArticles();
         }
 
         [HttpPost]
