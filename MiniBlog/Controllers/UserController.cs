@@ -1,6 +1,8 @@
+using Microsoft.AspNetCore.Identity;
 using MiniBlog.Model;
 using MiniBlog.Stores;
 using Microsoft.AspNetCore.Mvc;
+using MiniBlog.Service;
 
 namespace MiniBlog.Controllers
 {
@@ -10,22 +12,19 @@ namespace MiniBlog.Controllers
     {
         private IArticleStore articleStore;
         private IUserStore userStore;
+        private IUserService userService;
 
-        public UserController(IArticleStore articleStore, IUserStore userStore)
+        public UserController(IArticleStore articleStore, IUserStore userStore, IUserService userService)
         {
             this.articleStore = articleStore;
             this.userStore = userStore;
+            this.userService = userService;
         }
 
         [HttpPost]
         public ActionResult<User> Register(User user)
         {
-            if (!userStore.GetAll().Exists(_ => user.Name.ToLower() == _.Name.ToLower()))
-            {
-                userStore.Save(user);
-            }
-
-            return Created(" ", user);
+            return Created(" ", userService.Register(user));
         }
 
         [HttpGet]
