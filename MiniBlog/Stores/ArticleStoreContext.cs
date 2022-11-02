@@ -4,19 +4,24 @@ namespace MiniBlog.Stores
 {
     public class ArticleStoreContext : IArticleStore
     {
+        private List<Article> articles = new List<Article>();
+
         bool IArticleStore.Delete(Article articles)
         {
-            throw new NotImplementedException();
+            return this.articles.Remove(articles);
         }
 
         List<Article> IArticleStore.GetAll()
         {
-            throw new NotImplementedException();
+            return this.articles;
         }
 
         Article IArticleStore.Save(Article article)
         {
-            throw new NotImplementedException();
+            this.articles.Add(article);
+            return article;
         }
+
+
     }
 }
