@@ -17,7 +17,7 @@
         }
 
         [HttpPost]
-        public Article Create(Article article)
+        public IActionResult Create(Article article)
         {
             if (article.UserName != null)
             {
@@ -27,9 +27,10 @@
                 }
 
                 ArticleStoreWillReplaceInFuture.Instance.Save(article);
+                return Created($"/article/{article.Id}", article);
             }
 
-            return article;
+            return BadRequest();
         }
 
         [HttpGet("{id}")]
