@@ -14,17 +14,17 @@ public class ArticleStore : IArticleStore
 
     public Article Save(Article article)
     {
-        this._articles.Add(article);
+        _articles.Add(article);
         return article;
     }
 
     public List<Article> GetAll()
     {
-        return this._articles;
+        return _articles;
     }
 
     public bool Delete(Article articles)
     {
-        return this._articles.Remove(articles);
+        return _articles.Remove(articles);
     }
 }
