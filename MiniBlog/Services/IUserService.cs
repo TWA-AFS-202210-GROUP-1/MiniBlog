@@ -6,5 +6,6 @@ namespace MiniBlog.Services
     {
         public User? RegisterUser(User user);
         public List<User> GetAllUsers();
+        public User? Update(User user);
     }
 }

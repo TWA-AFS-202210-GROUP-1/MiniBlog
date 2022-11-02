@@ -33,21 +33,21 @@ namespace MiniBlog.Controllers
         }
 
         [HttpGet]
-        public List<User> GetAll()
+        public IActionResult GetAll()
         {
-            return _userService.GetAllUsers();
+            return Ok(_userService.GetAllUsers());
         }
 
         [HttpPut]
-        public User Update(User user)
+        public IActionResult Update(User user)
         {
-            var foundUser = _userStore.GetAll().FirstOrDefault(_ => _.Name == user.Name);
-            if (foundUser != null)
+            var foundUser = _userService.Update(user);
+            if (foundUser ==null)
             {
-                foundUser.Email = user.Email;
+                return NotFound();
             }
 
-            return foundUser;
+            return Ok(foundUser);
         }
 
         [HttpDelete]

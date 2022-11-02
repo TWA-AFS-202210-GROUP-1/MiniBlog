@@ -24,9 +24,9 @@ namespace MiniBlog.Controllers
         }
 
         [HttpGet]
-        public List<Article> List()
+        public IActionResult List()
         {
-            return _articleService.GetAllArticles();
+            return Ok(_articleService.GetAllArticles());
         }
 
         [HttpPost]
