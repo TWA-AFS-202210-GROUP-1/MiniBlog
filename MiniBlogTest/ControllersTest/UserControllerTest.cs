@@ -6,18 +6,21 @@ namespace MiniBlogTest.ControllerTest
     using Microsoft.AspNetCore.Mvc.Testing;
     using MiniBlog.Model;
     using MiniBlog.Stores;
+    using Moq;
     using Newtonsoft.Json;
     using Xunit;
 
     [Collection("IntegrationTest")]
     public class UserControllerTest
     {
+        private IArticleStore articleStore = new ArticleStoreContext();
+
         public UserControllerTest()
             : base()
 
         {
-            UserStoreWillReplaceInFuture.Instance.Init();
-            ArticleStoreWillReplaceInFuture.Instance.Init();
+            articleStore.Save(new Article(null, "Happy new year", "Happy 2021 new year"));
+            articleStore.Save(new Article(null, "Happy Halloween", "Halloween is coming"));
         }
 
         [Fact]
@@ -56,7 +59,14 @@ namespace MiniBlogTest.ControllerTest
         [Fact]
         public async Task Should_register_user_fail_when_UserStore_unavailable()
         {
-            var client = GetClient();
+            var userStoreMock = new Mock<IUserStore>();
+            userStoreMock.Setup(user => user.Save(It.IsAny<User>())).Throws<Exception>();
+
+            var factory = new WebApplicationFactory<Program>();
+            var client = factory.WithWebHostBuilder(builder =>
+            {
+                builder.ConfigureServices(services => { services.AddSingleton(service => userStoreMock.Object); });
+            }).CreateClient();
 
             var userName = "Tom";
             var email = "a@b.com";
