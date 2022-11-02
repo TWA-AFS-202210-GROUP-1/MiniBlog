@@ -42,10 +42,15 @@ namespace MiniBlog.Controllers
         }
 
         [HttpGet("{id}")]
-        public Article GetById(Guid id)
+        public IActionResult GetById(Guid id)
         {
-            var foundArticle = _articleStore.GetAll().FirstOrDefault(article => article.Id == id);
-            return foundArticle;
+            var foundArticle = _articleService.GetArticle(id);
+            if (foundArticle == null)
+            {
+                return BadRequest();
+            }
+
+            return Ok(foundArticle);
         }
     }
 }

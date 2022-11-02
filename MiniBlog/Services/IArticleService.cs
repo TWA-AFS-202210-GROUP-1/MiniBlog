@@ -7,5 +7,6 @@ namespace MiniBlog.Services
     {
         public List<Article> GetAllArticles();
         public Article? CreateArticle(Article article);
+        public Article? GetArticle(Guid id);
     }
 }

@@ -35,4 +35,10 @@ public class ArticleService : IArticleService
 
         return null;
     }
+
+    public Article? GetArticle(Guid id)
+    {
+        var foundArticle = _articleStore.GetAll().FirstOrDefault(article => article.Id == id);
+        return foundArticle;
+    }
 }
