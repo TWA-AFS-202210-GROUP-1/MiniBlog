@@ -10,10 +10,17 @@
     [Route("[controller]")]
     public class ArticleController : ControllerBase
     {
+        private IArticleStore _articleStore;
+
+        public ArticleController(IArticleStore articleStore)
+        {
+            _articleStore = articleStore;
+        }
+
         [HttpGet]
         public List<Article> List()
         {
-            return ArticleStoreWillReplaceInFuture.Instance.GetAll();
+            return _articleStore.GetAll();
         }
 
         [HttpPost]
@@ -26,7 +33,7 @@
                     UserStoreWillReplaceInFuture.Instance.Save(new User(article.UserName));
                 }
 
-                ArticleStoreWillReplaceInFuture.Instance.Save(article);
+                _articleStore.Save(article);
                 return Created($"/article/{article.Id}", article);
             }
 
@@ -36,8 +43,7 @@
         [HttpGet("{id}")]
         public Article GetById(Guid id)
         {
-            var foundArticle =
-                ArticleStoreWillReplaceInFuture.Instance.GetAll().FirstOrDefault(article => article.Id == id);
+            var foundArticle = _articleStore.GetAll().FirstOrDefault(article => article.Id == id);
             return foundArticle;
         }
     }
