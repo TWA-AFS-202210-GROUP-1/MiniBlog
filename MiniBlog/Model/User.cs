@@ -1,11 +1,7 @@
 namespace MiniBlog.Model
 {
     public class User
-    {
-        public User()
-        {
-        }
-
+    { 
         public User(string name, string email = "anonymous@unknow.com")
         {
             this.Name = name;

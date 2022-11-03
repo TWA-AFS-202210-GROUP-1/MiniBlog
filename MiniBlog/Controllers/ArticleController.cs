@@ -28,7 +28,7 @@ namespace MiniBlog.Controllers
         [HttpPost]
         public ActionResult<Article> Create(Article article)
         {
-            return Created(" ", articleService.Create(article));
+            return Created("/article", articleService.Create(article));
         }
 
         [HttpGet("{id}")]

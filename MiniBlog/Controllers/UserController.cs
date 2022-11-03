@@ -20,7 +20,7 @@ namespace MiniBlog.Controllers
         [HttpPost]
         public ActionResult<User> Register(User user)
         {
-            return Created(" ", userService.Register(user));
+            return Created("/user", userService.Register(user));
         }
 
         [HttpGet]
