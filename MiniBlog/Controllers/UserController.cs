@@ -1,6 +1,7 @@
 using MiniBlog.Model;
 using MiniBlog.Stores;
 using Microsoft.AspNetCore.Mvc;
+using MiniBlog.Service;
 
 namespace MiniBlog.Controllers
 {
@@ -8,57 +9,44 @@ namespace MiniBlog.Controllers
     [Route("[controller]")]
     public class UserController : ControllerBase
     {
-        [HttpPost]
-        public User Register(User user)
-        {
-            if (!UserStoreWillReplaceInFuture.Instance.GetAll().Exists(_ => user.Name.ToLower() == _.Name.ToLower()))
-            {
-                UserStoreWillReplaceInFuture.Instance.Save(user);
-            }
+        private IUserService _userService;
 
-            return user;
+        public UserController(IUserService userService)
+        {
+            this._userService = userService;
+        }
+
+        [HttpPost]
+        public ActionResult Register(User user)
+        {
+            User newUser = _userService.Register(user);
+
+            return Created($"/user/{newUser.Name}", user);
         }
 
         [HttpGet]
-        public List<User> GetAll()
+        public ActionResult GetAll()
         {
-            return UserStoreWillReplaceInFuture.Instance.GetAll();
+            return Ok(this._userService.GetAll());
         }
 
         [HttpPut]
-        public User Update(User user)
+        public ActionResult Update(User user)
         {
-            var foundUser = UserStoreWillReplaceInFuture.Instance.GetAll().FirstOrDefault(_ => _.Name == user.Name);
-            if (foundUser != null)
-            {
-                foundUser.Email = user.Email;
-            }
-
-            return foundUser;
+            return Ok(_userService.Update(user));
         }
 
         [HttpDelete]
-        public User Delete(string name)
+        public ActionResult Delete(string name)
         {
-            var foundUser = UserStoreWillReplaceInFuture.Instance.GetAll().FirstOrDefault(_ => _.Name == name);
-            if (foundUser != null)
-            {
-                UserStoreWillReplaceInFuture.Instance.Delete(foundUser);
-                var articles = ArticleStoreWillReplaceInFuture.Instance.GetAll()
-                    .Where(article => article.UserName == foundUser.Name)
-                    .ToList();
-                articles.ForEach(article => ArticleStoreWillReplaceInFuture.Instance.Delete(article));
-            }
-
-            return foundUser;
+            _userService.Delete(name);
+            return NoContent();
         }
 
         [HttpGet("{name}")]
-        public User GetByName(string name)
+        public ActionResult GetByName(string name)
         {
-            return UserStoreWillReplaceInFuture.Instance.GetAll().FirstOrDefault(_ =>
-                string.Equals(_.Name, name, StringComparison.CurrentCultureIgnoreCase)) ?? throw new
-                InvalidOperationException();
+            return Ok(_userService.GetByName(name));
         }
     }
 }

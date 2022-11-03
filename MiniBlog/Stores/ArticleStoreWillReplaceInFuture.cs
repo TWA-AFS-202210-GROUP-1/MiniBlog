@@ -28,7 +28,7 @@ namespace MiniBlog.Stores
         {
             return this.articles.Remove(articles);
         }
-        
+
         /// <summary>
         /// This is for test only, please help resolve!
         /// </summary>
