@@ -1,4 +1,6 @@
-﻿namespace MiniBlog.Controllers
+﻿using MiniBlog.Services;
+
+namespace MiniBlog.Controllers
 {
     using System;
     using System.Collections.Generic;
@@ -10,34 +12,36 @@
     [Route("[controller]")]
     public class ArticleController : ControllerBase
     {
-        [HttpGet]
-        public List<Article> List()
+        private readonly IArticleService _articleService;
+
+        public ArticleController(IArticleService articleService)
         {
-            return ArticleStoreWillReplaceInFuture.Instance.GetAll();
+            _articleService = articleService;
+        }
+
+        [HttpGet]
+        public IActionResult List()
+        {
+            return Ok(_articleService.GetAllArticles());
         }
 
         [HttpPost]
-        public Article Create(Article article)
+        public IActionResult Create(Article article)
         {
-            if (article.UserName != null)
-            {
-                if (!UserStoreWillReplaceInFuture.Instance.GetAll().Exists(_ => article.UserName == _.Name))
-                {
-                    UserStoreWillReplaceInFuture.Instance.Save(new User(article.UserName));
-                }
-
-                ArticleStoreWillReplaceInFuture.Instance.Save(article);
-            }
-
-            return article;
+            var createdArticle = _articleService.CreateArticle(article);
+            return Created($"/article/{createdArticle.Id}", createdArticle);
         }
 
         [HttpGet("{id}")]
-        public Article GetById(Guid id)
+        public IActionResult GetById(Guid id)
         {
-            var foundArticle =
-                ArticleStoreWillReplaceInFuture.Instance.GetAll().FirstOrDefault(article => article.Id == id);
-            return foundArticle;
+            var foundArticle = _articleService.GetArticle(id);
+            if (foundArticle == null)
+            {
+                return BadRequest();
+            }
+
+            return Ok(foundArticle);
         }
     }
 }

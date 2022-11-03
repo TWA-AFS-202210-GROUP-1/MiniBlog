@@ -2,10 +2,6 @@ namespace MiniBlog.Model
 {
     public class Article
     {
-        public Article()
-        {
-        }
-
         public Article(string userName, string title, string content)
         {
             Id = Guid.NewGuid();
