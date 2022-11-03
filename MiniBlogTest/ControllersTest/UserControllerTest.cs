@@ -1,5 +1,6 @@
 namespace MiniBlogTest.ControllerTest
 {
+    using System;
     using System.Collections.Generic;
     using System.Net;
     using System.Net.Http;
@@ -7,14 +8,18 @@ namespace MiniBlogTest.ControllerTest
     using System.Text;
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Mvc.Testing;
+    using Microsoft.Extensions.DependencyInjection;
     using MiniBlog.Model;
     using MiniBlog.Stores;
+    using Moq;
     using Newtonsoft.Json;
     using Xunit;
 
     [Collection("IntegrationTest")]
     public class UserControllerTest
     {
+        private IUser userStore = new UserContext();
+
         [Fact]
         public async Task Should_get_all_users()
         {
@@ -51,7 +56,14 @@ namespace MiniBlogTest.ControllerTest
         [Fact]
         public async Task Should_register_user_fail_when_UserStore_unavailable()
         {
-            var client = GetClient();
+            var userStoreMocker = new Mock<IUser>();
+            userStoreMocker.Setup(store => store.Save(It.IsAny<User>())).Throws<Exception>();
+            var factory = new WebApplicationFactory<Program>();
+
+            var client = factory.WithWebHostBuilder(builder =>
+            {
+                builder.ConfigureServices(services => services.AddSingleton(ServiceProvider => userStoreMocker.Object));
+            }).CreateClient();
 
             var userName = "Tom";
             var email = "a@b.com";
