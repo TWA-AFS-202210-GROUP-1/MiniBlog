@@ -41,37 +41,19 @@ namespace MiniBlog.Controllers
         [HttpPut]
         public User Update(User user)
         {
-            var foundUser = userService.GetAll().FirstOrDefault(_ => _.Name == user.Name);
-            if (foundUser != null)
-            {
-                foundUser.Email = user.Email;
-            }
-
-            return foundUser;
+            return userService.Update(user);
         }
 
         [HttpDelete]
         public User Delete(string name)
         {
-            var foundUser = userService.GetAll().FirstOrDefault(_ => _.Name == name);
-            if (foundUser != null)
-            {
-                userService.Delete(foundUser.Name);
-                var articles = articleStore.GetAll()
-                    .Where(article => article.UserName == foundUser.Name)
-                    .ToList();
-                articles.ForEach(article => articleStore.Delete(article));
-            }
-
-            return foundUser;
+            return userService.Delete(name);
         }
 
         [HttpGet("{name}")]
         public User GetByName(string name)
         {
-            return userService.GetAll().FirstOrDefault(_ =>
-                string.Equals(_.Name, name, StringComparison.CurrentCultureIgnoreCase)) ?? throw new
-                InvalidOperationException();
+            return userService.GetByName(name);
         }
     }
 }
