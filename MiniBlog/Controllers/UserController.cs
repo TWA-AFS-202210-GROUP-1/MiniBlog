@@ -25,27 +25,28 @@ namespace MiniBlog.Controllers
         }
 
         [HttpGet]
-        public List<User> GetAll()
+        public ActionResult GetAll()
         {
-            return this._userService.GetAll();
+            return Ok(this._userService.GetAll());
         }
 
         [HttpPut]
-        public User Update(User user)
+        public ActionResult Update(User user)
         {
-            return _userService.Update(user);
+            return Ok(_userService.Update(user));
         }
 
         [HttpDelete]
-        public User Delete(string name)
+        public ActionResult Delete(string name)
         {
-            return _userService.Delete(name);
+            _userService.Delete(name);
+            return NoContent();
         }
 
         [HttpGet("{name}")]
-        public User GetByName(string name)
+        public ActionResult GetByName(string name)
         {
-            return _userService.GetByName(name);
+            return Ok(_userService.GetByName(name));
         }
     }
 }

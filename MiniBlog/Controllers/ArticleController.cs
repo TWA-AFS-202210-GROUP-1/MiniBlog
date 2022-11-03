@@ -19,9 +19,9 @@
         }
 
         [HttpGet]
-        public List<Article> List()
+        public ActionResult List()
         {
-            return _articleService.GetAll();
+            return Ok(_articleService.GetAll());
         }
 
         [HttpPost]
@@ -33,10 +33,10 @@
         }
 
         [HttpGet("{id}")]
-        public Article GetById(Guid id)
+        public ActionResult GetById(Guid id)
         {
             var foundArticle = _articleService.GetById(id);
-            return foundArticle;
+            return Ok(foundArticle);
         }
     }
 }
