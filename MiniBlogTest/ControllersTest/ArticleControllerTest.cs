@@ -1,21 +1,32 @@
 ﻿namespace MiniBlogTest.ControllerTest
 {
+    using System;
+    using System.Collections.Generic;
     using System.Net;
+    using System.Net.Http;
     using System.Net.Mime;
     using System.Text;
     using Microsoft.AspNetCore.Mvc.Testing;
+    using Microsoft.Extensions.DependencyInjection;
     using MiniBlog.Model;
+    using MiniBlog.Service;
     using MiniBlog.Stores;
+    using Moq;
     using Newtonsoft.Json;
     using Xunit;
 
     [Collection("IntegrationTest")]
     public class ArticleControllerTest
     {
+        private IArticleStore articleStore = new ArticleStoreContext();
+        private IUser userStore = new UserContext();
+
         public ArticleControllerTest()
         {
-            UserStoreWillReplaceInFuture.Instance.Init();
-            ArticleStoreWillReplaceInFuture.Instance.Init();
+            //UserStoreWillReplaceInFuture.Instance.Init();
+            //ArticleStoreWillReplaceInFuture.Instance.Init();
+            articleStore.Save(new Article(null, "Happy new year", "Happy 2021 new year"));
+            articleStore.Save(new Article(null, "Happy Halloween", "Halloween is coming"));
         }
 
         [Fact]
@@ -32,7 +43,14 @@
         [Fact]
         public async void Should_create_article_fail_when_ArticleStore_unavailable()
         {
-            var client = GetClient();
+            var articleStoreMocker = new Mock<IArticleStore>();
+            articleStoreMocker.Setup(store => store.Save(It.IsAny<Article>())).Throws<Exception>();
+            var factory = new WebApplicationFactory<Program>();
+
+            var client = factory.WithWebHostBuilder(builder =>
+            {
+                builder.ConfigureServices(services => services.AddSingleton( ServiceProvider => articleStoreMocker.Object));
+            }).CreateClient();
             string userNameWhoWillAdd = "Tom";
             string articleContent = "What a good day today!";
             string articleTitle = "Good day";
@@ -78,10 +96,13 @@
             Assert.Equal("anonymous@unknow.com", users[0].Email);
         }
 
-        private static HttpClient GetClient()
+        private HttpClient GetClient()
         {
             var factory = new WebApplicationFactory<Program>();
-            return factory.CreateClient();
+            return factory.WithWebHostBuilder(builder =>
+            {
+                builder.ConfigureServices(services => services.AddSingleton(articleStore));
+            }).CreateClient();
         }
     }
 }
